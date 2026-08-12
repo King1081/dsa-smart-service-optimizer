@@ -15,10 +15,10 @@ import com.ug.dsaproject.model.Resource;
  * clustering for common hash functions.
  *
  * Minimum operations to implement:
- *  - put(String resourceId, Resource resource)
- *  - get(String resourceId)
- *  - remove(String resourceId)
- *  - your own hash(String key) function
+ * - put(String resourceId, Resource resource)
+ * - get(String resourceId)
+ * - remove(String resourceId)
+ * - your own hash(String key) function
  */
 public class ResourceHashTable {
 
@@ -26,7 +26,11 @@ public class ResourceHashTable {
         String key;
         Resource value;
         Entry next; // for chaining
-        Entry(String key, Resource value) { this.key = key; this.value = value; }
+
+        Entry(String key, Resource value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 
     private Entry[] table;
@@ -38,20 +42,59 @@ public class ResourceHashTable {
     }
 
     private int hash(String key) {
-        // TODO: implement your own hash function, e.g. polynomial rolling hash
-        return 0;
+        int hash = 0;
+
+        for (int i = 0; i < key.length(); i++) {
+            hash = (31 * hash + key.charAt(i)) % tableSize;
+        }
+        return hash;
     }
 
     public void put(String resourceId, Resource resource) {
-        // TODO: implement
+        int index = hash(resourceId);
+        Entry current = table[index];
+
+        while (current != null) {
+            if (current.key.equals(resourceId)) {
+                current.value = resource;
+                return;
+            }
+            current = current.next;
+        }
+        Entry newEntry = new Entry(resourceId, resource);
+        newEntry.next = table[index];
+        table[index] = newEntry;
     }
 
     public Resource get(String resourceId) {
-        // TODO: implement
+        int index = hash(resourceId);
+        Entry current = table[index];
+
+        while (current != null) {
+            if (current.key.equals(resourceId)) {
+                return current.value;
+            }
+            current = current.next;
+        }
         return null;
     }
 
     public void remove(String resourceId) {
-        // TODO: implement
+        int index = hash(resourceId);
+        Entry current = table[index];
+        Entry previous = null;
+
+        while (current != null) {
+            if (current.key.equals(resourceId)) {
+                if (previous == null) {
+                    table[index] = current.next;
+                } else {
+                    previous = current.next;
+                }
+                return;
+            }
+            previous = current;
+            current = current.next;
+        }
     }
 }
