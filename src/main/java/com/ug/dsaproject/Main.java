@@ -1,10 +1,15 @@
 package com.ug.dsaproject;
 
-import com.ug.dsaproject.datastructures.graph.CampusGraph;
-import com.ug.dsaproject.model.*;
-import com.ug.dsaproject.util.CsvLoader;
-
 import java.util.List;
+
+import com.ug.dsaproject.datastructures.bst.LocationBST;
+import com.ug.dsaproject.datastructures.graph.CampusGraph;
+import com.ug.dsaproject.model.Location;
+import com.ug.dsaproject.model.Resource;
+import com.ug.dsaproject.model.Road;
+import com.ug.dsaproject.model.ServiceRequest;
+import com.ug.dsaproject.model.TeamParameter;
+import com.ug.dsaproject.util.CsvLoader;
 
 /**
  * Entry point — demonstrates that the shared dataset loads correctly.
@@ -40,5 +45,11 @@ public class Main {
         // TODO: each owner wires in their module below as it's ready, e.g.
         //   UrgentRequestHeap heap = new UrgentRequestHeap(requests.size(), myPriorityWeight);
         //   for (ServiceRequest r : requests) heap.insert(r);
+
+        // WIRING: LocationBST 
+        LocationBST bst = new LocationBST();
+        for (Location loc : locations) {
+            bst.insert(loc);
+        }
     }
 }
