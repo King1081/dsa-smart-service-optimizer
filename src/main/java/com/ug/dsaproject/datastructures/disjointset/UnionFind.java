@@ -31,17 +31,56 @@ public class UnionFind {
     }
 
     public String find(String locationId) {
-        // TODO: implement with path compression
-        return null;
+       if (!parent.containsKey(locationId)){
+         return null;
+       }
+
+       if (locationId.equals(parent.get(locationId))) {
+          return locationId;
+       }
+
+       String root = find(parent.get(locationId));
+       parent.put(locationId, root);
+        return root;
     }
 
     public boolean union(String a, String b) {
-        // TODO: implement with union by rank; return false if already connected (cycle)
-        return false;
+        String rootA = find(a);
+        String rootB = find(b);
+
+        if (rootA == null || rootB == null) {
+            return false;
+        }
+
+        if (rootA.equals(rootB)) {
+            return false;
+        }
+
+
+        int rankA = rank.get(rootA);
+        int rankB = rank.get(rootB);
+
+        if (rankA < rankB) {
+            parent.put(rootA , rootB);
+        } else if (rankA > rankB) {
+            parent.put(rootB, rootA);
+        } else {
+            parent.put(rootB, rootA);
+            rank.put(rootA, rankA + 1);
+        }
+        
+
+        return true;  
     }
 
     public boolean connected(String a, String b) {
-        // TODO: implement
-        return false;
+       String rootA = find(a);
+       String rootB = find(b);
+
+
+       if (rootA == null || rootB == null) {
+           return false;
+       }
+        return rootA.equals(rootB);
     }
 }
