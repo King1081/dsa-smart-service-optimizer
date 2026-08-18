@@ -31,17 +31,32 @@ public class UnionFind {
     }
 
     public String find(String locationId) {
-        // TODO: implement with path compression
-        return null;
+        if (!parent.get(locationId).equals(locationId)) {
+            parent.put(locationId, find(parent.get(locationId))); // path compression
+        }
+        return parent.get(locationId);
     }
 
     public boolean union(String a, String b) {
-        // TODO: implement with union by rank; return false if already connected (cycle)
-        return false;
+        String rootA = find(a);
+        String rootB = find(b);
+        if (rootA.equals(rootB)) {
+            return false; // already connected -> this edge would create a cycle
+        }
+        int rankA = rank.get(rootA);
+        int rankB = rank.get(rootB);
+        if (rankA < rankB) {
+            parent.put(rootA, rootB);
+        } else if (rankA > rankB) {
+            parent.put(rootB, rootA);
+        } else {
+            parent.put(rootB, rootA);
+            rank.put(rootA, rankA + 1);
+        }
+        return true;
     }
 
     public boolean connected(String a, String b) {
-        // TODO: implement
-        return false;
+        return find(a).equals(find(b));
     }
 }

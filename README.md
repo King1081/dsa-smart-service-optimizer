@@ -35,6 +35,7 @@ src/main/java/com/ug/dsaproject/
     dijkstra/           Darko & Anna     DijkstraShortestPath
     mst/                    Papah & Abel     CampusMST (Kruskal + Prim)
   db/                       Nigel            SchemaSetup
+  benchmark/            Anna A.          PerformanceBenchmark
   Main.java                                    entry point / sanity check
 src/test/java/...                      mirrors src/main, one test class per module
 ```
