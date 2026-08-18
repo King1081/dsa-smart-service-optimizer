@@ -31,81 +31,53 @@ public class UnionFind {
     }
 
     public String find(String locationId) {
-<<<<<<< HEAD
-        if (!parent.get(locationId).equals(locationId)) {
-            parent.put(locationId, find(parent.get(locationId))); // path compression
+        if (!parent.containsKey(locationId)) {
+            return null;
         }
-        return parent.get(locationId);
-=======
-       if (!parent.containsKey(locationId)){
-         return null;
-       }
 
-       if (locationId.equals(parent.get(locationId))) {
-          return locationId;
-       }
-
-       String root = find(parent.get(locationId));
-       parent.put(locationId, root);
-        return root;
->>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
+        String p = parent.get(locationId);
+        if (!p.equals(locationId)) {
+            String root = find(p); // path compression
+            parent.put(locationId, root);
+            return root;
+        }
+        return p;
     }
 
     public boolean union(String a, String b) {
         String rootA = find(a);
         String rootB = find(b);
-<<<<<<< HEAD
-        if (rootA.equals(rootB)) {
-            return false; // already connected -> this edge would create a cycle
-        }
-        int rankA = rank.get(rootA);
-        int rankB = rank.get(rootB);
-        if (rankA < rankB) {
-            parent.put(rootA, rootB);
-=======
 
         if (rootA == null || rootB == null) {
             return false;
         }
 
         if (rootA.equals(rootB)) {
-            return false;
+            return false; // already connected
         }
 
-
-        int rankA = rank.get(rootA);
-        int rankB = rank.get(rootB);
+        int rankA = rank.getOrDefault(rootA, 0);
+        int rankB = rank.getOrDefault(rootB, 0);
 
         if (rankA < rankB) {
-            parent.put(rootA , rootB);
->>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
+            parent.put(rootA, rootB);
         } else if (rankA > rankB) {
             parent.put(rootB, rootA);
         } else {
             parent.put(rootB, rootA);
             rank.put(rootA, rankA + 1);
         }
-<<<<<<< HEAD
+
         return true;
     }
 
     public boolean connected(String a, String b) {
-        return find(a).equals(find(b));
-=======
-        
+        String rootA = find(a);
+        String rootB = find(b);
 
-        return true;  
-    }
-
-    public boolean connected(String a, String b) {
-       String rootA = find(a);
-       String rootB = find(b);
-
-
-       if (rootA == null || rootB == null) {
-           return false;
-       }
+        if (rootA == null || rootB == null) {
+            return false;
+        }
         return rootA.equals(rootB);
->>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
     }
 }
