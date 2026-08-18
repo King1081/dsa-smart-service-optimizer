@@ -31,15 +31,30 @@ public class UnionFind {
     }
 
     public String find(String locationId) {
+<<<<<<< HEAD
         if (!parent.get(locationId).equals(locationId)) {
             parent.put(locationId, find(parent.get(locationId))); // path compression
         }
         return parent.get(locationId);
+=======
+       if (!parent.containsKey(locationId)){
+         return null;
+       }
+
+       if (locationId.equals(parent.get(locationId))) {
+          return locationId;
+       }
+
+       String root = find(parent.get(locationId));
+       parent.put(locationId, root);
+        return root;
+>>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
     }
 
     public boolean union(String a, String b) {
         String rootA = find(a);
         String rootB = find(b);
+<<<<<<< HEAD
         if (rootA.equals(rootB)) {
             return false; // already connected -> this edge would create a cycle
         }
@@ -47,16 +62,50 @@ public class UnionFind {
         int rankB = rank.get(rootB);
         if (rankA < rankB) {
             parent.put(rootA, rootB);
+=======
+
+        if (rootA == null || rootB == null) {
+            return false;
+        }
+
+        if (rootA.equals(rootB)) {
+            return false;
+        }
+
+
+        int rankA = rank.get(rootA);
+        int rankB = rank.get(rootB);
+
+        if (rankA < rankB) {
+            parent.put(rootA , rootB);
+>>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
         } else if (rankA > rankB) {
             parent.put(rootB, rootA);
         } else {
             parent.put(rootB, rootA);
             rank.put(rootA, rankA + 1);
         }
+<<<<<<< HEAD
         return true;
     }
 
     public boolean connected(String a, String b) {
         return find(a).equals(find(b));
+=======
+        
+
+        return true;  
+    }
+
+    public boolean connected(String a, String b) {
+       String rootA = find(a);
+       String rootB = find(b);
+
+
+       if (rootA == null || rootB == null) {
+           return false;
+       }
+        return rootA.equals(rootB);
+>>>>>>> c07842c83865eba41b38defa7d02ae6258f90807
     }
 }
