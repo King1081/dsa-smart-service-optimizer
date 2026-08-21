@@ -25,7 +25,10 @@ public class RequestLinkedList {
     private static class Node {
         ServiceRequest data;
         Node next;
-        Node(ServiceRequest data) { this.data = data; }
+
+        Node(ServiceRequest data) {
+            this.data = data;
+        }
     }
 
     private Node head;
@@ -33,12 +36,50 @@ public class RequestLinkedList {
     private int size;
 
     public void addLast(ServiceRequest request) {
-        // TODO: implement
+        Node newNode = new Node(request);
+        if (isEmpty()) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
     }
 
     public ServiceRequest removeFirst() {
-        // TODO: implement
-        return null;
+        if (isEmpty()) {
+            return null;
+        }
+
+        ServiceRequest removed = head.data;
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        }
+        size--;
+        return removed;
+    }
+
+    public void undo() {
+        if (isEmpty()) {
+            return;
+        }
+
+        if (head == tail) {
+            head = null;
+            tail = null;
+            size = 0;
+            return;
+        }
+
+        Node current = head;
+        while (current.next != tail) {
+            current = current.next;
+        }
+        current.next = null;
+        tail = current;
+        size--;
     }
 
     public boolean isEmpty() {
